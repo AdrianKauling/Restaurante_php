@@ -1,22 +1,29 @@
 <?php
+    if (count($_POST) > 0) {
 
-    try{
+        $codigo_produto = $_POST['codigo_produto'];
+        $nome_produto = $_POST['nome_produto'];
+        $categoria_produto = $_POST['categoria_produto'];
+        $valor_produto = $_POST['valor_produto'];
+        $info_produto = $_POST[ 'info_produto'];
 
-        include 'conexao_bd.php';
+        try{
 
-        //TODO pegar codigo do usuário logado
+            include 'conexao_bd.php';
 
-        $consulta = $conn->prepare("UPDATE produto SET situacao='DESABILITADO' WHERE codigo=?");
-        $consulta->execute([$_GET['cod_produto']]);
-        $resultado_consulta['style'] = 'alert-success';
-        $resultado_consulta['msg'] = 'Produto removido com sucesso';
+            //TODO pegar codigo do usuário logado
 
-        $conn=null;
+            $consulta = $conn->prepare("UPDATE produto SET nome=?,categoria=?,valor=?,info_adicional=?,data_hora=now() WHERE codigo=?");
+            $consulta->execute([$nome_produto, $categoria_produto, $valor_produto, $info_produto, $codigo_produto]);
+            $resultado_consulta['style'] = 'alert-success';
+            $resultado_consulta['msg'] = 'Produto alterado com sucesso';
 
-    }catch (PDOException $e) {
-        // $e->getMessage();
-        $resultado_consulta['style'] = 'alert-danger';
-        $resultado_consulta['msg'] = 'Falha ao remover produto: ' . $e->getMessage();
+            $conn=null;
+
+        }catch (PDOException $e) {
+            // $e->getMessage();
+            $resultado_consulta['style'] = 'alert-danger';
+            $resultado_consulta['msg'] = 'Falha ao alterar produto: ' . $e->getMessage();
+        }
     }
-
-    include "produto.php";
+    header("Location: produto.php");

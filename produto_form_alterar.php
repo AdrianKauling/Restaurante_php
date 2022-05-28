@@ -12,13 +12,20 @@
 <body>
     <div class="container">
         <h2>Alterar produto</h2>
-        <form action="cadastrar_produto.php" method="POST" id="form_cadastro_produto">
-            <?php 
-                if(isset($_GET['cod_produto']) && $_GET['cod_produto'] > 0){
-                    $cod_produto = $_GET['cod_produto'];
-                    include 'selecionar_produto.php';
-                }
-            ?>
+        <?php 
+            if(isset($_GET['cod_produto']) && $_GET['cod_produto'] > 0){
+                $cod_produto = $_GET['cod_produto'];
+                include 'selecionar_produto.php';
+            }
+        ?>
+        <form action="alterar_produto.php" method="POST" id="form_cadastro_produto">
+            
+            <div class="form-group">
+                <label for="codigo_produto">Código do produto:</label>
+                <input type="text" required  value="<?= $produtos[0]['codigo'];?>" class="form-control" id="codigo_produto" name="codigo_produto" aria-describedby="nomeHelp" readonly placeholder="Digite o produto..">
+            </div>
+            <br>
+
             <div class="form-group">
                 <label for="nome_produto">Nome do produto:</label>
                 <input type="text" required  value="<?= $produtos[0]['nome'];?>" class="form-control" id="nome_produto" name="nome_produto" aria-describedby="nomeHelp" placeholder="Digite o produto..">
@@ -48,7 +55,7 @@
                 <textarea id="info_produto" class="form-control" name="info_produto" rows="4"><?= $produtos[0]['info_adicional'];?></textarea>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Adicionar item</button>
+            <button type="submit" class="btn btn-primary">Alterar produto</button>
             <br>
             <br>
             <?php if (isset($resultado_consulta)) : ?>
