@@ -18,8 +18,11 @@
                 $usuarioExiste['cod'] = 0;
                 $usuarioExiste['msg'] = "Usuário não confere";
             }elseif(count($result) == 1){
-                $usuarioExiste['cod'] = 1;
-                echo "Usuário logado com sucesso";
+                session_start();
+                $_SESSION["nome_usuario"] = $result[0]["nome"];
+                $_SESSION["nome_email"] = $result[0]["email"];
+                $_SESSION["codigo_usuario"] = $result[0]["codigo"];
+                header("Location: pedido.php");
             }else{
                 echo 'verificar';
             }

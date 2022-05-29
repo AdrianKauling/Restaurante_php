@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+<?php if(isset($_SESSION['codigo_usuario'])): ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +13,7 @@
 
 <body>
     <div class="container">
+        <h5>Olá, <?=$_SESSION["nome_usuario"]?>!</h5>
         <h2>Cadastro de pedidos</h2>
         <form action="cadastrar_pedido.php" method="POST" id="form_cadastro_pedido">
             <div class="form-group">
@@ -51,3 +54,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </html>
+<?php else: ?>
+
+    <h1>Você não está logado no sistema!</h1>
+
+<?php endif; ?>

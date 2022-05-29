@@ -1,3 +1,9 @@
+<?php session_start(); ?>
+<?php if(isset($_SESSION['codigo_usuario'])): 
+    require_once('./produto/ProdutoController.php');
+    $produtoController = new ProdutoController();    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,46 +19,46 @@
     <div class="container">
         <h2>Alterar produto</h2>
         <?php 
-            if(isset($_GET['cod_produto']) && $_GET['cod_produto'] > 0){
-                $cod_produto = $_GET['cod_produto'];
-                include 'selecionar_produto.php';
+            if(isset($_GET['codigo']) && $_GET['codigo'] > 0){
+                $codigo = $_GET['codigo'];
+                $produtos = $produtoController->selecionar($codigo);
             }
         ?>
         <form action="alterar_produto.php" method="POST" id="form_cadastro_produto">
             
             <div class="form-group">
                 <label for="codigo_produto">Código do produto:</label>
-                <input type="text" required  value="<?= $produtos[0]['codigo'];?>" class="form-control" id="codigo_produto" name="codigo_produto" aria-describedby="nomeHelp" readonly placeholder="Digite o produto..">
+                <input type="text" required  value="<?= $produtos[0]['codigo'];?>" class="form-control" id="codigo_produto" name="codigo" aria-describedby="nomeHelp" readonly placeholder="Digite o produto..">
             </div>
             <br>
 
             <div class="form-group">
                 <label for="nome_produto">Nome do produto:</label>
-                <input type="text" required  value="<?= $produtos[0]['nome'];?>" class="form-control" id="nome_produto" name="nome_produto" aria-describedby="nomeHelp" placeholder="Digite o produto..">
+                <input type="text" required  value="<?= $produtos[0]['nome'];?>" class="form-control" id="nome_produto" name="nome" aria-describedby="nomeHelp" placeholder="Digite o produto..">
             </div>
             <br>
 
             <div class="form-group">
                 <label for="categoria_produto">Categoria:</label>
-                <input type="text" required value="<?= $produtos[0]['categoria'];?>" class="form-control" id="categoria_produto" name="categoria_produto" aria-describedby="nomeHelp" placeholder="Digite a categoria do produto..">
+                <input type="text" required value="<?= $produtos[0]['categoria'];?>" class="form-control" id="categoria_produto" name="categoria" aria-describedby="nomeHelp" placeholder="Digite a categoria do produto..">
             </div>
             <br>
 
             <div class="form-group">
                 <label for="valor_produto">Valor unitário (R$): </label>
-                <input type="number" required value="<?= $produtos[0]['valor'];?>" step=".01" class="form-control" id="valor_produto" name="valor_produto" aria-describedby="nomeHelp" placeholder="Digite o valor do produto..">
+                <input type="number" required value="<?= $produtos[0]['valor'];?>" step=".01" class="form-control" id="valor_produto" name="valor" aria-describedby="nomeHelp" placeholder="Digite o valor do produto..">
             </div>
             <br>
 
             <div class="form-group">
                 <label for="foto_produto">Foto:</label>
-                <input type="file" class="form-control" id="foto_produto" name="foto_produto" aria-describedby="nomeHelp">
+                <input type="file" class="form-control" id="foto_produto" name="foto" aria-describedby="nomeHelp">
             </div>
             <br>
 
             <div class="form-group">
                 <label for="info_produto">Informações adicionais:</label>
-                <textarea id="info_produto" class="form-control" name="info_produto" rows="4"><?= $produtos[0]['info_adicional'];?></textarea>
+                <textarea id="info_produto" class="form-control" name="info_adicional" rows="4"><?= $produtos[0]['info_adicional'];?></textarea>
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Alterar produto</button>
@@ -65,7 +71,9 @@
             <?php endif; ?>
 
 
-            <?php include "selecionar_produto.php"; ?>
+            <?php
+                $produtos = $produtoController->selecionar();
+            ?>
 
             <br>
             <?php if (count($produtos) > 0) : ?>
@@ -94,8 +102,8 @@
                             <td><?= $p["info_adicional"] ?></td>
                             <td><?= $p["data_hora"] ?></td>
                             <td>
-                            <a class="btn btn-outline-warning btn-sm" onclick="<?php ?>"  href="remover_produto.php?cod_produto=<?= $p['codigo']; ?>">Alterar</a>
-                                <a class="btn btn-outline-danger btn-sm" onclick="return confirm('Deletar <?php echo $p['nome'] ?> ?')" href="remover_produto.php?cod_produto=<?= $p['codigo']; ?>">Remover</a>
+                            <a class="btn btn-outline-warning btn-sm" onclick="<?php ?>"  href="produto_alterar.php?codigo=<?= $p['codigo']; ?>">Alterar</a>
+                                <a class="btn btn-outline-danger btn-sm" onclick="return confirm('Deletar <?php echo $p['nome'] ?> ?')" href="produto_remover.php?codigo=<?= $p['codigo']; ?>">Remover</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -107,3 +115,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </html>
+<?php else: ?>
+
+<h1>Você não está logado no sistema!</h1>
+
+<?php endif; ?>
